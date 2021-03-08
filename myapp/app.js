@@ -1,65 +1,26 @@
 const express = require('express');
-const app = express();
+const bodyParser = require("body-parser");
 const rp = require('request-promise');
+
+const app = express();
 const port = 3002;
-
-
-// HTML странички и URL
-app.get('/', function (
-    request,
-    response
-) {
-    response.sendFile(__dirname + '/index.html')
-})
-app.get('/card-molodost', function (
-    request,
-    response
-) {
-    response.sendFile(__dirname + '/card-molodost.html')
-})
-
-
-// Подрубаем статику
-app.use('/public', express.static('public'));
-
-console.log("Странички запустились");
-
-//ЗАпуск сервера и вывод ссылки в консоли
-app.listen(port, () => {
-    console.log(`Сервер готов. Переходи по ссылке: http://localhost:${port}`)
-})
-
-
-
-// Отправляем запрос
 const URL = 'https://restaurantmvp.herokuapp.com/data';
+const urlencodedParser = bodyParser.urlencoded({extended: false});
 
-function requestHandler() {
+
+function requestHandler(data) {
     console.log("старт функции хендлер");
-    // Получаем форму
-    const form = document.forms.orderForm;
 
-    //Получаем элементы формы
-    const elem_name = form.elements.name;
-    const elem_phone = form.elements.phone;
-    const elem_hours_count = form.elements.hours_count;
-    const elem_person_count = form.elements.person_count;
-    const elem_comment_str = form.elements.comment_str;
-
-    const elem_datetime = form.elements.datetime;
-
-    // Формируем из элементов объект с значением элементов
     const dict = {
-        phone: elem_phone.value,
-        name: elem_name.value,
+        phone: data.phone,
+        name: data.name,
         restaurant_id: 1,
         datetime: "2021-03-02 14:00:00",
-        hours_count: elem_hours_count.value,
-        person_count: elem_person_count.value,
-        comment_str: elem_comment_str.value,
+        hours_count: data.hours_count,
+        person_count: data.person_count,
+        comment_str: data.comment_str,
     };
-
-    alert(dict.name);
+    console.log(dict)
 
     const options = {
         method: 'POST',
@@ -74,3 +35,49 @@ function requestHandler() {
         .catch(err => console.log(err))
 
 }
+
+
+// HTML странички и URL
+app.get('/', function (
+    request,
+    response
+) {
+    response.sendFile(__dirname + '/index.html')
+})
+
+app.get('/card-molodost', function (
+    request,
+    response
+) {
+    response.sendFile(__dirname + '/card-molodost.html')
+})
+
+app.post(
+    "/card-molodost",
+    urlencodedParser,
+    function (
+        request,
+        response
+    ) {
+        if(!request.body) return response.sendStatus(400);
+        console.log(request.body);
+        requestHandler(request.body)
+        //response.send(`${request.body.userName} - ${request.body.userAge}`);
+    });
+
+// Подрубаем статику
+app.use('/public', express.static('public'));
+
+
+//ЗАпуск сервера и вывод ссылки в консоли
+app.listen(port, () => {
+    console.log(`Сервер готов. Переходи по ссылке: http://localhost:${port}`)
+})
+
+
+
+
+
+// Отправляем запрос
+
+

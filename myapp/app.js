@@ -20,7 +20,6 @@ function requestHandler(data) {
         person_count: data.person_count,
         comment_str: data.comment_str,
     };
-    console.log(dict)
 
     const options = {
         method: 'POST',
@@ -61,8 +60,8 @@ app.post(
     ) {
         if(!request.body) return response.sendStatus(400);
         console.log(request.body);
-        requestHandler(request.body)
-        //response.send(`${request.body.userName} - ${request.body.userAge}`);
+        requestHandler(request.body);
+        response.sendFile(__dirname + "/success.html")
     });
 
 // Подрубаем статику

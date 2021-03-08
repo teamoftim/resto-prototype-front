@@ -1,50 +1,7 @@
-const express = require('express')
-const rp = require('request-promise')
-const exphbs = require('express-handlebars')
-const path = require('path')
-const app = express()
-const port = 3002
-
-app.engine('.hbs', exphbs({
-    defaultLayout: 'main',
-    extname: '.hbs',
-    layoutsDir: path.join(__dirname, 'views/layouts')
-}))
-app.set('view engine', '.hbs')
-app.set('views', path.join(__dirname, 'views'))
-
-console.log("wewew");
-
-
-
-function requestHandler() {
-    console.log("sdsds");
-    var dict = {
-        "phone": 79266266252,
-        "name": "rtyu",
-        "restaurant_id": 1,
-        "datetime": "2021-03-02 14:00:00",
-        "hours_count": 3,
-        "person_count": 4,
-        "comment_str": "Принести воду к приходу"
-    };
-
-    const options = {
-        method: 'POST',
-        uri: 'https://restaurantmvp.herokuapp.com/data',
-        body: dict,
-        json: true
-    }
-    rp(options)
-        .then(function (response) {
-            console.log(response)
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
-
-
-}
+const express = require('express');
+const app = express();
+const rp = require('request-promise');
+const port = 3002;
 
 
 // HTML странички и URL
@@ -65,9 +22,55 @@ app.get('/card-molodost', function (
 // Подрубаем статику
 app.use('/public', express.static('public'));
 
-
+console.log("Странички запустились");
 
 //ЗАпуск сервера и вывод ссылки в консоли
 app.listen(port, () => {
     console.log(`Сервер готов. Переходи по ссылке: http://localhost:${port}`)
 })
+
+
+
+// Отправляем запрос
+const URL = 'https://restaurantmvp.herokuapp.com/data';
+
+function requestHandler() {
+    console.log("старт функции хендлер");
+    // Получаем форму
+    const form = document.forms.orderForm;
+
+    //Получаем элементы формы
+    const elem_name = form.elements.name;
+    const elem_phone = form.elements.phone;
+    const elem_hours_count = form.elements.hours_count;
+    const elem_person_count = form.elements.person_count;
+    const elem_comment_str = form.elements.comment_str;
+
+    const elem_datetime = form.elements.datetime;
+
+    // Формируем из элементов объект с значением элементов
+    const dict = {
+        phone: elem_phone.value,
+        name: elem_name.value,
+        restaurant_id: 1,
+        datetime: "2021-03-02 14:00:00",
+        hours_count: elem_hours_count.value,
+        person_count: elem_person_count.value,
+        comment_str: elem_comment_str.value,
+    };
+
+    alert(dict.name);
+
+    const options = {
+        method: 'POST',
+        url: URL,
+        body: dict,
+        json: true
+    }
+    rp(options)
+        .then(function (response) {
+            console.log(response)
+        })
+        .catch(err => console.log(err))
+
+}

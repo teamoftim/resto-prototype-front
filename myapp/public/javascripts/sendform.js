@@ -1,38 +1,13 @@
-// function requestHandler() {
-//     console.log("asdasd");
-//     const request = require('request-promise');
-//     console.log("asdasd");
-//     let form = document.forms.form;
-//
-//
-//     var dict = {
-//         "phone": form.elements.phone,
-//         "name": form.elements.name,
-//         "restaurant_id": 1,
-//         "datetime": "2021-03-02 14:00:00",
-//         "hours_count": form.elements.hours_count,
-//         "person_count": form.elements.person_count,
-//         "comment_str": "Принести воду к приходу"};
-//
-//     const options = {
-//         method: 'POST',
-//         uri: 'https://restaurantmvp.herokuapp.com/data',
-//         body: dict,
-//         json: true
-//     }
-//     request(options)
-//         .then(function (response) {
-//             console.log(response);
-//         })
-//         .catch(function (err) {
-//             console.log(err);
-//         })
-//
-// }
-//
-//
-//
-//
+const rp = require("request-promise");
+
+
+
+
+
+
+
+
+
 
 
 // Отправка данных из формы в ядро
@@ -66,36 +41,3 @@
 //     console.log(dict)
 //     response.send(dict)
 // })
-
-
-
-function requestHandler() {
-    console.log("sdsds");
-    const request = require('request-promise');
-    console.log("хуй");
-    var dict = {
-        "phone": 79266266252,
-        "name": "rtyu",
-        "restaurant_id": 1,
-        "datetime": "2021-03-02 14:00:00",
-        "hours_count": 3,
-        "person_count": 4,
-        "comment_str": "Принести воду к приходу"
-    };
-
-    const options = {
-        method: 'POST',
-        uri: 'https://restaurantmvp.herokuapp.com/data',
-        body: dict,
-        json: true
-    }
-    request(options)
-        .then(function (response) {
-            console.log(response)
-        })
-        .catch(function (err) {
-            console.log(err)
-        })
-
-
-};
